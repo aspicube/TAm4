@@ -68,13 +68,13 @@ int main(void)
   STM_EVAL_LEDInit(LED5);
   STM_EVAL_LEDInit(LED6);
 
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
   gpioA_init.GPIO_Pin = GPIO_Pin_1;
   gpioA_init.GPIO_Mode = GPIO_Mode_OUT;
   gpioA_init.GPIO_Speed = GPIO_Speed_50MHz;
   gpioA_init.GPIO_OType = GPIO_OType_PP;
-  gpioA_init.GPIO_PuPd = GPIO_PuPd_DOWN;
+  gpioA_init.GPIO_PuPd = GPIO_PuPd_UP;
   GPIO_Init(GPIOA, &gpioA_init);
-  shiftnumber = 0;
   GPIO_ResetBits(GPIOA, GPIO_Pin_1);
   /* Turn on LEDs */
 //  STM_EVAL_LEDOn(LED3);
@@ -85,15 +85,22 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-	GPIO_SetBits(GPIOA, GPIO_Pin_1);
+	//GPIO_SetBits(GPIOA, GPIO_Pin_1);
+	shiftnumber = 0;
 	for(i = 0;i < 32;i ++)
 	{
 		numberspace[0] = shiftnumber;
 		testins(numberspace, 8);
 		shiftnumber = (shiftnumber << 1) | 1;
 	}
+	if(numberspace[0] == numberspace[2])STM_EVAL_LEDOn(LED3);
+	//GPIO_ResetBits(GPIOA, GPIO_Pin_1);
+	//STM_EVAL_LEDOn(LED3);
+	GPIO_SetBits(GPIOA, GPIO_Pin_1);
+	for(i = 0;i < 1000; i++);//delay for a while, waiting for oscilloscope
+	testins(numberspace, 8);
 	GPIO_ResetBits(GPIOA, GPIO_Pin_1);
-	for(i = 0;i < 10000; i++);//delay for a while, waiting for oscilloscope
+	//STM_EVAL_LEDOff(LED3);
   }
 }
 

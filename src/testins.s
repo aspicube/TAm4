@@ -12,6 +12,11 @@
 testins:
 #push {lr}
 nop
+nop
+nop
+nop
+nop
+nop
 sub r2, r2, r2
 sub r3, r3, r3
 nop
@@ -24,6 +29,11 @@ nop
 ldr r2, [r0, #4]
 nop
 str r2, [r0, #8]
+nop
+nop
+nop
+nop
+nop
 nop
 #pop {pc}
 bx lr
